@@ -5,12 +5,11 @@ import LoginButton from "../components/LoginButton";
 import LoginLogo from "../components/LoginLogo";
 import { BASE_URL } from "../config";
 
-export default function Login(){
+export default function Login({navigation}){
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
 
     const loginAction = async () => {
-        alert(username + ' ' + password);
         const response = await fetch(`${BASE_URL}/api/users/login`, {
             method: 'POST',
             headers: {
@@ -24,7 +23,7 @@ export default function Login(){
         });
         
         const json = await response.json();
-        alert(JSON.stringify(json));
+        navigation.navigate('Home', { userId: json.userId });
     }
 
     return(
@@ -45,7 +44,7 @@ export default function Login(){
                 onChangeText={text => setPassword(text)}
                 secureTextEntry>
             </TextInput>
-            <LoginButton onPress={loginAction}></LoginButton>
+            <LoginButton onPress={loginAction} title="Login"></LoginButton>
             <StatusBar style="auto"/>
         </View>
     );
