@@ -1,9 +1,9 @@
 import { StatusBar } from "expo-status-bar";
 import React, {useState} from "react";
 import { StyleSheet, Text, View, TextInput } from "react-native";
-import LoginButton from "../components/LoginButton";
+import ActionButton from "../components/ActionButton";
 import LoginLogo from "../components/LoginLogo";
-import { BASE_URL } from "../config";
+import { BASE_URL, colors } from "../config";
 
 export default function Login({navigation}){
     const [username, setUsername] = useState(null);
@@ -44,8 +44,11 @@ export default function Login({navigation}){
                 onChangeText={text => setPassword(text)}
                 secureTextEntry>
             </TextInput>
-            <LoginButton onPress={loginAction} title="Login"></LoginButton>
-            <StatusBar style="auto"/>
+            <ActionButton 
+            onPress={() => navigation.navigate('Home', { userId: username })} 
+            title="Login"
+            buttonStyles={styles.loginButton}></ActionButton>
+
         </View>
     );
 }
@@ -53,17 +56,17 @@ export default function Login({navigation}){
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        backgroundColor: '#f1f1f1',
         alignItems: 'center',
         justifyContent: 'center'
     },
     title:{
-        fontSize: 50,
-        color: '#3285FF',
+        fontSize: 48,
+        color: colors.primary,
+        //color: '#3285FF',
         fontWeight: 'bold',
     },
     subtitle:{
-        fontSize: 20,
+        fontSize: 15,
         color: 'gray'
     },
     textInput:{
@@ -72,5 +75,9 @@ const styles = StyleSheet.create({
         marginTop: 20,
         borderRadius: 20,
         backgroundColor: '#fff'
+    },
+    loginButton:{
+        marginTop: 20,
+        width: '80%'
     }
 });
