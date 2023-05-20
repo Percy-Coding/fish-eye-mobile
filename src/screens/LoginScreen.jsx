@@ -1,31 +1,32 @@
-import { StatusBar } from "expo-status-bar";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { StyleSheet, Text, View, TextInput } from "react-native";
 import ActionButton from "../components/ActionButton";
 import LoginLogo from "../components/LoginLogo";
-import { BASE_URL, colors } from "../config";
+import { colors } from "../config";
+import { loginUser } from "../api/usersAPI";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function Login({navigation}){
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
 
     const loginAction = async () => {
-        const response = await fetch(`${BASE_URL}/api/users/login`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username: username,
-                password: password
-            }),
-        });
-        
-        const json = await response.json();
-        navigation.navigate('Home', { userId: json.userId });
+
+        if(username && password) {
+            const responseData = await loginUser(username, password);
+            if(responseData.success) {
+                await AsyncStorage.setItem('loggedInUser', JSON.stringify(responseData.user));
+                navigation.navigate('Home');
+                setPassword(null);
+                setUsername(null);
+            }else alert(responseData.message);
+            
+        }else alert('Username and pasword must be filled in');
     }
 
+    
+    
     return(
         <View style={styles.container}>
             <LoginLogo></LoginLogo>
@@ -45,7 +46,7 @@ export default function Login({navigation}){
                 secureTextEntry>
             </TextInput>
             <ActionButton 
-            onPress={() => navigation.navigate('Home', { userId: username })} 
+            onPress={() => loginAction()} 
             title="Login"
             buttonStyles={styles.loginButton}></ActionButton>
 
@@ -62,7 +63,6 @@ const styles = StyleSheet.create({
     title:{
         fontSize: 48,
         color: colors.primary,
-        //color: '#3285FF',
         fontWeight: 'bold',
     },
     subtitle:{
