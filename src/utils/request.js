@@ -11,7 +11,7 @@ export const postRequest = async (url, body) =>{
           return status >= 200;
         },
       });
-    console.log(`POST REQUEST WITH URL ${url} result: \n${JSON.stringify(response.data,null,2)}`);
+    //console.log(`POST REQUEST WITH URL ${url} result: \n${JSON.stringify(response.data,null,2)}`);
     return response.data;
 }
 
@@ -24,6 +24,6 @@ export const getRequest = async (url) =>{
           return status >= 200;
         },
       });
-    
+    //console.log(`POST REQUEST WITH URL ${url} result: \n${JSON.stringify(response.data,null,2)}`);
     return response.data;
 }

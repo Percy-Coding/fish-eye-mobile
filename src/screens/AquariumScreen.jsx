@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TextInput, FlatList, ActivityIndicator } from "
 import ActionButton from "../components/ActionButton";
 import { getSensorDataByAquariumId, getAquariumById, startMonitoring } from "../api/aquariumAPI";
 import ReadingCard from "../components/ReadingCard";    
+import {Ionicons} from '@expo/vector-icons';
 
 export default function Aquarium({navigation, route}){
 
@@ -17,7 +18,7 @@ export default function Aquarium({navigation, route}){
         if(responseData.success){
             setIsLoading(true);
         }
-        alert(responseData.message);
+        console.log(responseData.message);
         
     };
 
@@ -50,7 +51,7 @@ export default function Aquarium({navigation, route}){
 
         if(responseData.success){
             setReadings(responseData.sensorData);
-        }else alert(responseData.message);
+        }else console.log(responseData.message);
     }
 
     const renderReading = ({item, index}) =>{
@@ -84,6 +85,11 @@ export default function Aquarium({navigation, route}){
             ) : (
                 <View style={styles.container}>
                     {aquariumObj && <>
+                        <ActionButton
+                        icon={<Ionicons name="arrow-back" size={24} color="white" />}
+                        onPress={() => navigation.navigate('Home')}
+                        style={{ left: 10}}
+                        ></ActionButton>
                         <Text style={styles.headerText}>Aquarium: {aquariumObj.name}</Text>
                         <View style={styles.statusContainer}>
                             <Text style={styles.statusText}>Status: {aquariumObj.active? 'Active': 'Inactive'}</Text>

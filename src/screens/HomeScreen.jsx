@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
 import { StyleSheet, Text, View, FlatList, BackHandler  } from "react-native";
-import { BASE_URL } from "../config";
 import ActionButton from "../components/ActionButton";
 import AquariumCard from "../components/AquariumCard";
 import AddAquariumModal from "../components/AddAquariumModal";
@@ -27,20 +26,7 @@ export default function Home({navigation, route}){
         const responseData = await getAquariumsByUserId(ownerId);
         if(responseData.success){
             setAquariums(responseData.aquariums);
-        } else alert(responseData.message);
-    }
-
-    const startMonitoring = async (aquariumId) => {
-        const response = await fetch(`${BASE_URL}/api/aquarium/${aquariumId}/start-device`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            }
-        });
-        
-        const json = await response.json();
-        //alert(json);
+        } else console.log(responseData.message);
     }
 
     const renderAquarium = ({item, index}) =>{
